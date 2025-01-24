@@ -13,7 +13,10 @@ public class Player : MonoBehaviour
 
     public InputField HpInputField;
     public Text HpText;
-
+    public Text AcText;
+    public Text StrText;
+    public Text IntText;
+    public Text DexText;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +32,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //ステータス表示の更新
+        UpdateHPText();
+        UpdateACText();
+        UpdateSTRText();
+        UpdateIntText();
+        UpdateDexText();
     }
 
     //ヒールの決定
@@ -43,7 +51,11 @@ public class Player : MonoBehaviour
         {
             // HPを増やす
             Hp += addHP;
-
+            //100より増えない
+            if (Hp > 100)
+            {
+                Hp = 100;
+            }
             // 現在のHPを更新
             UpdateHPText();
         }
@@ -61,5 +73,24 @@ public class Player : MonoBehaviour
     {
         HpText.text = "HP: " + Hp.ToString();
     }
-
+    //Ac表示の更新
+    void UpdateACText()
+    {
+        AcText.text = "AC: " + Ac.ToString();
+    }
+    //Str表示の更新
+    void UpdateSTRText()
+    {
+        StrText.text = "STR: " + Str.ToString();
+    }
+    //Int表示の更新
+    void UpdateIntText()
+    {
+        IntText.text = "Int: " + Int.ToString();
+    }
+    //Dex表示の更新
+    void UpdateDexText()
+    {
+        DexText.text = "Dex: " + Dex.ToString();
+    }
 }

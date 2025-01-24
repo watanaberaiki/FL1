@@ -9,9 +9,11 @@ public class Gamemanager : MonoBehaviour
     bool isEncounterpop = false;
     bool isEventpop = false;
     bool isHealpop = false;
+    bool isStatuspop = false;
     public GameObject Encounterpanel;
     public GameObject Eventpanel;
     public GameObject Healpanel;
+    public GameObject Statuspanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -113,6 +115,29 @@ public class Gamemanager : MonoBehaviour
     /// <summary>
     /// Heal
     /// <summary>
+
+    //Status
+    public void StatusPop()
+    {
+
+        //他にポップが出ているか
+        if (IsPop())
+        {
+            Debug.Log("Pop");
+        }
+        //出ていないならtrueにする
+        else
+        {
+           isStatuspop = true;
+           Statuspanel.SetActive(true);
+        }
+    }
+    //Statusを閉じる場合
+    public void StatusPopShutdown()
+    {
+        isStatuspop = false;
+        Statuspanel.SetActive(false);
+    }
 
     //何かしらのポップがあるか
     public bool IsPop()
