@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using TMPro;
 using Utilities;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,8 @@ public class DiceRoller : MonoBehaviour
 
     [Title("UI References")]
     [SerializeField] TMPro.TextMeshProUGUI resultText;
+    [SerializeField] GameObject inputPanel;
+    [SerializeField] TMPro.TMP_InputField targetInputField;
 
     [Title("Audio & Particle Effects")]
     [SerializeField] AudioClip shakeClip;
@@ -37,6 +40,7 @@ public class DiceRoller : MonoBehaviour
     Vector3 originPosition;
     Vector3 currentVelocity;
     bool finalize;
+    int targetNumber;
 
     void Awake()
     {
@@ -44,21 +48,28 @@ public class DiceRoller : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
 
-        resultText.text = "Click to roll";
-        originPosition.x = transform.position.x;
-        originPosition.y = transform.position.y;
-        originPosition.z = transform.position.z;
-        
+        resultText.text = "";
+        originPosition = transform.position;
 
         rollTimer = new CountdownTimer(maxRollTime);
         rollTimer.OnTimerStart += PerformInitialRoll;
         rollTimer.OnTimerStop += () => finalize = true;
+
+        inputPanel.SetActive(true);
     }
 
-    void OnMouseUp()
+    public void ConfirmTargetNumber()
     {
-        if (rollTimer.IsRunning) return;
-        rollTimer.Start();
+        if (int.TryParse(targetInputField.text, out targetNumber))
+        {
+            resultText.text = "Rolling...";
+            rollTimer.Start();
+        }
+        else
+        {
+            resultText.text = "Invalid input. Enter a number.";
+            Debug.LogError("Invalid input. Please enter a valid number.");
+        }
     }
 
     void Update()
@@ -127,7 +138,15 @@ public class DiceRoller : MonoBehaviour
 
         int result = diceSides.GetMatch();
         Debug.Log($"Dice landed on {result}");
-        resultText.text = result.ToString();
+
+        if (result >= targetNumber)
+        {
+            resultText.text = $"Success! ({result})";
+        }
+        else
+        {
+            resultText.text = $"Fail! ({result})";
+        }
     }
 
     void ResetDiceState()
