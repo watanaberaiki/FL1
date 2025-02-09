@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gamemanager : MonoBehaviour
 {
-
-
     bool isEncounterpop = false;
     bool isEventpop = false;
     bool isHealpop = false;
@@ -14,12 +13,22 @@ public class Gamemanager : MonoBehaviour
     public GameObject Eventpanel;
     public GameObject Healpanel;
     public GameObject Statuspanel;
+    public Canvas canvas0;
+    public Canvas canvas1;
+    public Canvas canvas2;
+    //イベント関連
+    public InputField EventInputField;
+    private int Eventnum;
     // Start is called before the first frame update
     void Start()
     {
         Encounterpanel.SetActive(false);
         Eventpanel.SetActive(false);
         Healpanel.SetActive(false);
+        canvas0.enabled = true;
+        canvas1.enabled = false;
+        canvas2.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -150,5 +159,51 @@ public class Gamemanager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    //イベント数値
+    void EventNunber()
+    {
+        // InputFieldから入力されたテキストを取得
+        string input = EventInputField.text;
+        // 入力値が数字かチェック
+        if (int.TryParse(input, out int Eventnumber))
+        {
+            Eventnum = Eventnumber;
+            //イベントナンバーが範囲の場合
+            if (Eventnum <=6 && Eventnum >= 1)
+            //イベントの詳細パネルを表示
+            {
+                
+            }
+            //範囲外の場合
+            else
+            {
+                Eventnum = 0;
+            }
+        }
+        //数字じゃない
+        else
+        {
+
+        }
+    }
+    //全体のCanvas無効化,戦闘有効
+    public void Battle()
+    {
+        canvas0.enabled = false;
+        canvas1.enabled = true;
+        canvas2.enabled = false;
+    }
+
+    //イベント
+    public void Event()
+    {
+        isEventpop = false;
+        Eventpanel.SetActive(false);
+        canvas2.enabled = true;
+        canvas0.enabled = false;
+        canvas1.enabled = false;
+        isEventpop = false;
     }
 }
